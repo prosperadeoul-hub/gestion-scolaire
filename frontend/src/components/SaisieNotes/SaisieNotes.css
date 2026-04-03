@@ -1,0 +1,255 @@
+/* SaisieNotes Content Styling - Premium SaaS Aesthetics */
+
+.saisie-notes-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+/* Filters Section */
+.saisie-notes__filters {
+  background-color: var(--color-bg-panel);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  box-shadow: var(--shadow-subtle);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-filter {
+  flex: 1.5;
+}
+
+.form-group__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-muted);
+  transition: color 0.2s;
+}
+
+.input-icon.left {
+  left: 12px;
+}
+
+.input-icon.right {
+  right: 12px;
+}
+
+.form-group__select, .form-group__input, .grade-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: white;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  color: var(--color-text-main);
+  outline: none;
+}
+
+.form-group__input {
+  padding-left: 40px;
+}
+
+.form-group__select:focus, .form-group__input:focus, .grade-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.form-group__input:focus + .input-icon {
+  color: var(--color-primary);
+}
+
+/* Table Design */
+.table-card {
+  background-color: var(--color-bg-panel);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-subtle);
+  overflow: hidden;
+}
+
+.grade-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.grade-table th {
+  background-color: #F8F9FA;
+  padding: var(--spacing-md) var(--spacing-lg);
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.grade-table__row {
+  transition: background-color 0.2s;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.grade-table__row:last-child {
+  border-bottom: none;
+}
+
+.grade-table__row:hover {
+  background-color: #F8F9FA;
+}
+
+.grade-table__cell {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 0.95rem;
+  color: var(--color-text-main);
+}
+
+.student-name {
+  font-weight: 600;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* Grade Input */
+.mini {
+  max-width: 120px;
+}
+
+.grade-input {
+  text-align: center;
+  padding-right: 32px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.grade-input--error {
+  border-color: var(--color-error);
+  background-color: #FFF5F5;
+}
+
+.grade-input--error:focus {
+  box-shadow: 0 0 0 2px #FED7D7;
+}
+
+/* Actions Row */
+.row-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+}
+
+.action-btn {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: var(--color-text-muted);
+}
+
+.action-btn.edit:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.action-btn.delete:hover {
+  background-color: #FFF5F5;
+  color: var(--color-error);
+}
+
+.action-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Saisie Actions */
+.saisie-notes__actions {
+  margin-top: var(--spacing-xl);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0873C4;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* States */
+.inner-loading, .empty-state, .selection-prompt {
+  background-color: var(--color-bg-panel);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--spacing-md);
+  color: var(--color-text-muted);
+  min-height: 300px;
+}
+
+.empty-icon, .prompt-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--color-border);
+}
+
+.text-right { text-align: right; }

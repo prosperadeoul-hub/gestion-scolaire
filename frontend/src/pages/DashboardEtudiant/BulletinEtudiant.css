@@ -1,0 +1,113 @@
+.bulletin-container {
+  padding: var(--spacing-xl);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.bulletin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--spacing-md);
+}
+
+.bulletin-header__title {
+  margin: 0;
+  color: var(--color-text-main);
+  font-size: 28px;
+}
+
+.bulletin-header__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.btn-print {
+  background-color: var(--color-bg-panel);
+  color: var(--color-text-main);
+  border: 1px solid var(--color-border);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-print:hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-primary);
+}
+
+.bulletin-card {
+  background: var(--color-bg-panel);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-subtle);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.bulletin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.bulletin-table th {
+  background-color: var(--color-bg);
+  padding: var(--spacing-md);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bulletin-table td {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-main);
+}
+
+.bulletin-table__row:last-child td {
+  border-bottom: none;
+}
+
+.bulletin-footer {
+  background-color: var(--color-bg);
+  padding: var(--spacing-lg);
+  text-align: right;
+  border-top: 1px solid var(--color-border);
+}
+
+.bulletin-footer__text {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-main);
+}
+
+.bulletin-footer__statut--success {
+  color: var(--color-success);
+}
+
+.bulletin-footer__statut--warning {
+  color: var(--color-error);
+}
+
+/* Mode Impression */
+@media print {
+  .bulletin-header__actions {
+    display: none;
+  }
+  .bulletin-container {
+    padding: 0;
+  }
+  body, .bulletin-card {
+    background-color: white !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .bulletin-footer {
+    background-color: transparent !important;
+  }
+}

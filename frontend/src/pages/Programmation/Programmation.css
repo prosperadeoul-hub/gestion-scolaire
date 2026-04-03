@@ -1,0 +1,236 @@
+:root {
+  --primary-blue: #0984E3;
+  --primary-hover: #0771c1;
+  --text-dark: #2D3436;
+  --text-muted: #636E72;
+  --border-color: #DFE6E9;
+  --bg-light: #F9FAFB;
+  --white: #FFFFFF;
+  --danger: #D63031;
+  --success: #00B894;
+  --radius: 8px;
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.prog-container {
+  max-width: 1200px;
+  margin: var(--space-32) auto;
+  padding: 0 var(--space-24);
+}
+
+.prog-header {
+  margin-bottom: var(--space-32);
+}
+
+.prog-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: var(--space-8);
+}
+
+.prog-header p {
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+/* Infos Generales Section */
+.info-section {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: var(--space-24);
+  margin-bottom: var(--space-32);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-24);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.input-group input, .input-group select {
+  padding: 12px var(--space-16);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+  border-color: var(--primary-blue);
+}
+
+/* Layout Semestres */
+.semesters-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-32);
+  margin-bottom: var(--space-32);
+}
+
+@media (max-width: 992px) {
+  .semesters-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.semester-card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+}
+
+.semester-title {
+  padding: var(--space-16) var(--space-24);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-blue);
+}
+
+.ue-list {
+  padding: var(--space-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.ue-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.ue-input-nom { flex: 4; }
+.ue-input-code { flex: 2; }
+.ue-input-ects { flex: 1; min-width: 60px; }
+
+.ue-row input {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.ue-row input:focus {
+  border-color: var(--primary-blue);
+  outline: none;
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.btn-remove:hover {
+  opacity: 0.7;
+}
+
+.btn-add {
+  margin: var(--space-16) var(--space-24) var(--space-24);
+  background: none;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  padding: var(--space-16);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  transition: all 0.2s;
+}
+
+.btn-add:hover {
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+  background-color: rgba(9, 132, 227, 0.05);
+}
+
+/* Actions */
+.submit-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-32);
+}
+
+.btn-submit {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  padding: var(--space-16) var(--space-32);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+  background-color: var(--primary-hover);
+}
+
+.icon { width: 18px; height: 18px; }
+
+.message-banner {
+  padding: var(--space-8) var(--space-16);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: var(--space-16);
+  align-self: center;
+}
+
+.message-banner.success {
+  background-color: rgba(0, 184, 148, 0.1);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.message-banner.error {
+  background-color: rgba(214, 48, 49, 0.1);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}

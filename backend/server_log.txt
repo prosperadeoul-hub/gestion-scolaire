@@ -1,0 +1,84 @@
+Watching for file changes with StatReloader
+C:\Users\ADEOUL\Desktop\PROJETS_2026\gestion-scolaire\backend\core\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+April 03, 2026 - 16:28:06
+Django version 6.0.3, using settings 'backend.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.0/howto/deployment/
+Watching for file changes with StatReloader
+[03/Apr/2026 16:33:50] "OPTIONS /api/token/ HTTP/1.1" 200 8692
+C:\Users\ADEOUL\Desktop\PROJETS_2026\gestion-scolaire\backend\env\Lib\site-packages\rest_framework\pagination.py:198: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'core.models.Promotion'> QuerySet.
+  paginator = self.django_paginator_class(queryset, page_size)
+C:\Users\ADEOUL\Desktop\PROJETS_2026\gestion-scolaire\backend\env\Lib\site-packages\rest_framework\pagination.py:198: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'core.models.Etudiant'> QuerySet.
+  paginator = self.django_paginator_class(queryset, page_size)
+[03/Apr/2026 16:34:41] "GET /api/etudiants/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:41] "GET /api/promotions/ HTTP/1.1" 200 135
+[03/Apr/2026 16:34:41] "GET /api/etudiants/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:41] "GET /api/promotions/ HTTP/1.1" 200 135
+C:\Users\ADEOUL\Desktop\PROJETS_2026\gestion-scolaire\backend\env\Lib\site-packages\rest_framework\pagination.py:198: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'core.models.User'> QuerySet.
+  paginator = self.django_paginator_class(queryset, page_size)
+[03/Apr/2026 16:34:41] "GET /api/users/?role=STUDENT HTTP/1.1" 200 52
+[03/Apr/2026 16:34:41] "GET /api/users/?role=STUDENT HTTP/1.1" 200 52
+Not Found: /api/classes/
+[03/Apr/2026 16:34:43] "GET /api/classes/ HTTP/1.1" 404 15558
+C:\Users\ADEOUL\Desktop\PROJETS_2026\gestion-scolaire\backend\env\Lib\site-packages\rest_framework\pagination.py:198: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'core.models.Matiere'> QuerySet.
+  paginator = self.django_paginator_class(queryset, page_size)
+Not Found: /api/classes/
+[03/Apr/2026 16:34:43] "GET /api/matieres/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:43] "GET /api/classes/ HTTP/1.1" 404 15558
+[03/Apr/2026 16:34:43] "GET /api/matieres/?page=1&search= HTTP/1.1" 200 52
+Not Found: /api/classes/
+[03/Apr/2026 16:34:47] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:34:47] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:34:48] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:34:48] "GET /api/classes/ HTTP/1.1" 404 15558
+[03/Apr/2026 16:34:48] "GET /api/matieres/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:48] "GET /api/matieres/?page=1&search= HTTP/1.1" 200 52
+Not Found: /api/classes/
+[03/Apr/2026 16:34:49] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:34:49] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:34:51] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:34:51] "GET /api/matieres/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:51] "GET /api/classes/ HTTP/1.1" 404 15558
+[03/Apr/2026 16:34:51] "GET /api/matieres/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:52] "GET /api/etudiants/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:52] "GET /api/promotions/ HTTP/1.1" 200 135
+[03/Apr/2026 16:34:52] "GET /api/etudiants/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:52] "GET /api/promotions/ HTTP/1.1" 200 135
+[03/Apr/2026 16:34:52] "GET /api/users/?role=STUDENT HTTP/1.1" 200 52
+[03/Apr/2026 16:34:52] "GET /api/users/?role=STUDENT HTTP/1.1" 200 52
+C:\Users\ADEOUL\Desktop\PROJETS_2026\gestion-scolaire\backend\env\Lib\site-packages\rest_framework\pagination.py:198: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'core.models.Note'> QuerySet.
+  paginator = self.django_paginator_class(queryset, page_size)
+[03/Apr/2026 16:34:55] "GET /api/notes/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:55] "GET /api/etudiants/ HTTP/1.1" 200 52
+[03/Apr/2026 16:34:55] "GET /api/etudiants/ HTTP/1.1" 200 52
+[03/Apr/2026 16:34:55] "GET /api/notes/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:34:55] "GET /api/matieres/ HTTP/1.1" 200 52
+[03/Apr/2026 16:34:55] "GET /api/matieres/ HTTP/1.1" 200 52
+Not Found: /api/classes/
+[03/Apr/2026 16:35:24] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:35:24] "GET /api/matieres/?page=1&search= HTTP/1.1" 200 52
+[03/Apr/2026 16:35:24] "GET /api/classes/ HTTP/1.1" 404 15558
+[03/Apr/2026 16:35:24] "GET /api/matieres/?page=1&search= HTTP/1.1" 200 52
+Not Found: /api/classes/
+[03/Apr/2026 16:36:40] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:36:40] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:37:04] "GET /api/classes/ HTTP/1.1" 404 15558
+Not Found: /api/classes/
+[03/Apr/2026 16:37:04] "GET /api/classes/ HTTP/1.1" 404 15558
+[03/Apr/2026 16:37:04] "GET /api/users/me/ HTTP/1.1" 200 109
+[03/Apr/2026 16:37:04] "GET /api/users/me/ HTTP/1.1" 200 109

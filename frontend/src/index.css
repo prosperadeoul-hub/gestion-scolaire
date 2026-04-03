@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Configuration globale - Pur CSS (Design Premium SaaS) */
+
+:root {
+  /* Palette de Couleurs Professionnelle - Flat Design */
+  --color-bg: #F8F9FA;
+  --color-bg-panel: #FFFFFF;
+  
+  /* Textes */
+  --color-text-main: #2D3436;
+  --color-text-muted: #636E72;
+  
+  /* Accents et retours d'état */
+  --color-primary: #0984E3;
+  --color-primary-light: #E3F2FD;
+  --color-success: #00B894;
+  --color-error: #D63031;
+  
+  /* Bordures et Ombres */
+  --color-border: #DFE6E9;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  /* Espacements (Multiples de 8px) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --sidebar-width: 260px;
+
+  /* Typographie moderne */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-size-base: 15px;
+}
+
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  font-size: var(--font-size-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Scrollbar personnalisée pour plus de finesse */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #DFE6E9;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B2BEC3;
+}
