@@ -2,11 +2,30 @@ from rest_framework import serializers
 from .models import User, Matiere, Etudiant, Note, Promotion, Module
 from django.db import transaction
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'sexe', 'telephone', 'password']
+        extra_kwargs = {'password': {'write_only': True, 'required': False}}
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', 'Pass1234')
+        user = User.objects.create_user(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
 
 class ModuleSerializer(serializers.ModelSerializer):
+    promotion_libelle = serializers.CharField(source='promotion.libelle', read_only=True)
+    
     class Meta:
         model = Module
-        fields = ['id', 'nom', 'code', 'credits_ects', 'semestre']
+        fields = ['id', 'nom', 'code', 'credits_ects', 'semestre', 'promotion', 'promotion_libelle']
+
+class PromotionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Promotion
+        fields = '__all__'
 
 class PromotionWritableSerializer(serializers.ModelSerializer):
     modules = ModuleSerializer(many=True)
@@ -23,16 +42,43 @@ class PromotionWritableSerializer(serializers.ModelSerializer):
                 Module.objects.create(promotion=promotion, **module_data)
         return promotion
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role']
+class EtudiantSerializer(serializers.ModelSerializer):
+    user_details = UserSerializer(source='user', read_only=True)
+    promotion_libelle = serializers.CharField(source='promotion.libelle', read_only=True)
+    
+    # Pour la création simplifiée
+    first_name = serializers.CharField(write_only=True, required=False)
+    last_name = serializers.CharField(write_only=True, required=False)
+    sexe = serializers.CharField(write_only=True, required=False)
+    email = serializers.EmailField(write_only=True, required=False)
+    telephone = serializers.CharField(write_only=True, required=False)
 
-
-class PromotionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Promotion
-        fields = '__all__'
+        model = Etudiant
+        fields = ['matricule', 'user', 'user_details', 'promotion', 'promotion_libelle', 'date_naissance', 
+                  'first_name', 'last_name', 'sexe', 'telephone', 'email']
+        read_only_fields = ['user']
+
+    def create(self, validated_data):
+        # Si first_name est présent, on crée le User
+        if 'first_name' in validated_data:
+            email = validated_data.pop('email', f"{validated_data['matricule']}@school.edu")
+            user_data = {
+                'username': email,
+                'email': email,
+                'first_name': validated_data.pop('first_name'),
+                'last_name': validated_data.pop('last_name'),
+                'sexe': validated_data.pop('sexe', 'M'),
+                'telephone': validated_data.pop('telephone', ''),
+                'role': 'STUDENT'
+            }
+            with transaction.atomic():
+                user = User.objects.create_user(**user_data)
+                user.set_password('Pass1234')
+                user.save()
+                etudiant = Etudiant.objects.create(user=user, **validated_data)
+            return etudiant
+        return super().create(validated_data)
 
 class MatiereSerializer(serializers.ModelSerializer):
     enseignant_name = serializers.CharField(source='enseignant.last_name', read_only=True)
@@ -41,14 +87,6 @@ class MatiereSerializer(serializers.ModelSerializer):
     class Meta:
         model = Matiere
         fields = ['id', 'code', 'nom', 'credits_ects', 'enseignant', 'enseignant_name', 'promotion', 'promotion_libelle', 'semestre']
-
-class EtudiantSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    promotion_libelle = serializers.CharField(source='promotion.libelle', read_only=True)
-
-    class Meta:
-        model = Etudiant
-        fields = ['matricule', 'user', 'promotion', 'promotion_libelle', 'date_naissance']
 
 class NoteSerializer(serializers.ModelSerializer):
     etudiant_name = serializers.SerializerMethodField()
@@ -61,4 +99,3 @@ class NoteSerializer(serializers.ModelSerializer):
 
     def get_etudiant_name(self, obj):
         return f"{obj.etudiant.user.last_name} {obj.etudiant.user.first_name}"
-

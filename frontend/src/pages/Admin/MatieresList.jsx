@@ -37,10 +37,14 @@ const ModulesList = () => {
     useEffect(() => {
         // Fetch promotions and teachers for dropdowns
         const fetchData = async () => {
-            const resProm = await api.get('promotions/');
-            const resTeachers = await api.get('users/?role=TEACHER');
-            setPromotions(resProm.data.results || resProm.data);
-            setTeachers(resTeachers.data.results || resTeachers.data);
+            try {
+                const resProm = await api.get('promotions/');
+                const resTeachers = await api.get('users/?role=TEACHER');
+                setPromotions(resProm.data.results || resProm.data);
+                setTeachers(resTeachers.data.results || resTeachers.data);
+            } catch (err) {
+                console.error("Error fetching dependencies", err);
+            }
         };
         fetchData();
     }, []);
@@ -48,7 +52,7 @@ const ModulesList = () => {
     const fetchModules = async () => {
         try {
             setLoading(true);
-            const res = await api.get(`matieres/?page=${page}&search=${searchQuery}`); // On garde l'endpoint matieres pour l'instant car c'est celui qui liste les instances de cours
+            const res = await api.get(`modules/?page=${page}&search=${searchQuery}`);
             if (res.data.results) {
                 setModules(res.data.results);
                 setTotalPages(Math.ceil(res.data.count / 10));
@@ -66,7 +70,7 @@ const ModulesList = () => {
     const handleDelete = async (id) => {
         if (!window.confirm("Voulez-vous vraiment supprimer ce module ?")) return;
         try {
-            await api.delete(`matieres/${id}/`);
+            await api.delete(`modules/${id}/`);
             addToast("Module supprimé avec succès", "success");
             fetchModules();
         } catch (err) {
@@ -81,7 +85,7 @@ const ModulesList = () => {
                 code: m.code, 
                 nom: m.nom, 
                 credits_ects: m.credits_ects, 
-                enseignant: m.enseignant?.id || '', 
+                enseignant: m.enseignant || '', 
                 promotion: m.promotion || '',
                 semestre: m.semestre || 1
             });
@@ -96,10 +100,10 @@ const ModulesList = () => {
         e.preventDefault();
         try {
             if (editingModule) {
-                await api.put(`matieres/${editingModule.id}/`, formData);
+                await api.put(`modules/${editingModule.id}/`, formData);
                 addToast("Module modifié avec succès", "success");
             } else {
-                await api.post('matieres/', formData);
+                await api.post('modules/', formData);
                 addToast("Module créé avec succès", "success");
             }
             setShowModal(false);
@@ -147,7 +151,6 @@ const ModulesList = () => {
                                         <th>Code</th>
                                         <th>Nom</th>
                                         <th>ECTS</th>
-                                        <th>Enseignant</th>
                                         <th>Promotion</th>
                                         <th className="text-right">Actions</th>
                                     </tr>
@@ -158,7 +161,6 @@ const ModulesList = () => {
                                             <td className="grade-table__cell font-mono">{m.code}</td>
                                             <td className="grade-table__cell font-bold">{m.nom}</td>
                                             <td className="grade-table__cell">{m.credits_ects}</td>
-                                            <td className="grade-table__cell">{m.enseignant_name || "Non assigné"}</td>
                                             <td className="grade-table__cell">
                                                 <span className="badge-class">{m.promotion_libelle || "N/A"}</span>
                                             </td>
@@ -278,6 +280,5 @@ const ModulesList = () => {
         </MainLayout>
     );
 };
-
 
 export default ModulesList;

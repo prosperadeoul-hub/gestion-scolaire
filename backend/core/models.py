@@ -9,7 +9,13 @@ class User(AbstractUser):
         ('STUDENT', 'Étudiant'),
     )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='STUDENT')
-    pass
+    
+    SEX_CHOICES = (
+        ('M', 'Masculin'),
+        ('F', 'Féminin'),
+    )
+    sexe = models.CharField(max_length=1, choices=SEX_CHOICES, null=True, blank=True)
+    telephone = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"

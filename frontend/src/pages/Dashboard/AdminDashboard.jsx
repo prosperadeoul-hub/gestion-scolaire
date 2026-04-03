@@ -14,7 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 import './Dashboard.css';
 
-const COLORS = ['#0984E3', '#00B894', '#FDCB6E', '#E17055'];
+const COLORS = ['#0984E3', '#00B894', '#FDCB6E', '#E17055', '#6C5CE7', '#81ECEC'];
 
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -22,16 +22,16 @@ const AdminDashboard = () => {
   const [chartData, setChartData] = useState({ 
     roles: [], 
     promotions: [], 
-    top_classes: [], 
+    student_distribution: [],
+    top_promotions: [], 
     teacher_load: [] 
   });
-  const [recentData, setRecentData] = useState({ students: [], notes: [] });
+  const [recentData, setRecentData] = useState({ students: [], notes: [], modules: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchGlobalStats = async () => {
       try {
-        const resCl = await api.get('classes/');
         const resUs = await api.get('users/');
         const resStats = await api.get('stats/dashboard/');
         
@@ -48,7 +48,8 @@ const AdminDashboard = () => {
         setChartData({
           roles: resStats.data.role_distribution || [],
           promotions: resStats.data.promotion_data || [],
-          top_classes: resStats.data.top_classes || [],
+          student_distribution: resStats.data.student_distribution || [],
+          top_promotions: resStats.data.top_promotions || [],
           teacher_load: resStats.data.teacher_load || []
         });
 
@@ -143,6 +144,35 @@ const AdminDashboard = () => {
 
         <div className="chart-card">
           <div className="chart-card__header">
+            <h3>Effectifs par Promotion</h3>
+          </div>
+          <div className="chart-container">
+            <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                    <Pie
+                        data={chartData.student_distribution}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={70}
+                        outerRadius={100}
+                        paddingAngle={8}
+                        dataKey="value"
+                    >
+                        {chartData.student_distribution.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[(index + 2) % COLORS.length]} cornerRadius={4} />
+                        ))}
+                    </Pie>
+                    <Tooltip contentStyle={{ borderRadius: '8px', border: 'none' }} />
+                    <Legend iconType="circle" />
+                </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </section>
+
+      <section className="dashboard-charts">
+        <div className="chart-card">
+          <div className="chart-card__header">
             <h3>Répartition des Rôles</h3>
           </div>
           <div className="chart-container">
@@ -168,6 +198,48 @@ const AdminDashboard = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
+        </div>
+
+        <div className="chart-card">
+            <div className="chart-card__header">
+                <h3>Top Performances Promotions</h3>
+            </div>
+            <div className="performance-list">
+                {chartData.top_promotions.map((p, i) => (
+                    <div key={i} className="perf-item">
+                        <div className="perf-item__rank">{i+1}</div>
+                        <div className="perf-item__info">
+                            <span className="perf-item__name">{p.name}</span>
+                            <div className="perf-item__bar-bg">
+                                <div className="perf-item__bar-fill" style={{ width: `${(p.avg/20)*100}%` }}></div>
+                            </div>
+                        </div>
+                        <div className="perf-item__val">{p.avg}/20</div>
+                    </div>
+                ))}
+                {chartData.top_promotions.length === 0 && (
+                    <p className="text-muted text-center py-4">Aucune donnée de performance disponible.</p>
+                )}
+            </div>
+        </div>
+      </section>
+
+      <section className="dashboard-charts">
+         <div className="chart-card">
+            <div className="chart-card__header">
+                <h3>Charge Enseignante (Modules assignés)</h3>
+            </div>
+            <div className="chart-container">
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={chartData.teacher_load} layout="vertical">
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#F0F0F0" />
+                        <XAxis type="number" axisLine={false} tickLine={false} />
+                        <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} width={100} />
+                        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none' }} />
+                        <Bar dataKey="value" fill="#00B894" radius={[0, 4, 4, 0]} barSize={30} />
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
         </div>
       </section>
 
@@ -242,6 +314,7 @@ const AdminDashboard = () => {
                      <tr>
                         <th>Code</th>
                         <th>Nom</th>
+                        <th>Promotion</th>
                         <th>ECTS</th>
                      </tr>
                   </thead>
@@ -250,11 +323,12 @@ const AdminDashboard = () => {
                         <tr key={m.id}>
                            <td>{m.code}</td>
                            <td>{m.nom}</td>
+                           <td className="text-secondary">{m.promotion_libelle}</td>
                            <td>{m.credits_ects}</td>
                         </tr>
                      ))}
                      {(!recentData.modules || recentData.modules.length === 0) && (
-                        <tr><td colSpan="3" className="text-muted">Aucun module créé.</td></tr>
+                        <tr><td colSpan="4" className="text-muted">Aucun module créé.</td></tr>
                      )}
                   </tbody>
                </table>

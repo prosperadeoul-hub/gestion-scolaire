@@ -8,7 +8,8 @@ import {
   DocumentChartBarIcon, 
   Cog6ToothIcon,
   ArrowLeftOnRectangleIcon,
-  TableCellsIcon
+  TableCellsIcon,
+  UserGroupIcon
 } from '@heroicons/react/24/outline';
 import './Sidebar.css';
 
@@ -16,6 +17,7 @@ const Sidebar = ({ logout }) => {
   const menuItems = [
     { name: 'Tableau de Bord', path: '/dashboard', icon: Squares2X2Icon },
     { name: 'Modules', path: '/modules', icon: BookOpenIcon },
+    { name: 'Enseignants', path: '/teachers', icon: UserGroupIcon },
     { name: 'Étudiants', path: '/students', icon: UsersIcon },
     { name: 'Prog. Annuelle', path: '/programmation', icon: TableCellsIcon },
     { name: 'Notes/Bulletins', path: '/grades', icon: DocumentChartBarIcon },

@@ -219,6 +219,82 @@
 .text-success { color: var(--color-success) !important; font-weight: 600; }
 .text-danger { color: var(--color-error) !important; font-weight: 600; }
 .text-muted { color: var(--color-text-muted) !important; font-size: 0.875rem; }
+.text-secondary { color: var(--color-text-muted) !important; font-weight: 500; font-size: 0.8125rem; }
+
+/* Performance Items */
+.performance-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+}
+
+.perf-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  transition: transform 0.2s;
+}
+
+.perf-item:hover {
+  transform: translateX(4px);
+}
+
+.perf-item__rank {
+  width: 28px;
+  height: 28px;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.perf-item__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.perf-item__name {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--color-text-main);
+  margin-bottom: 4px;
+}
+
+.perf-item__bar-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.perf-item__bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+  border-radius: 3px;
+  transition: width 1s ease-in-out;
+}
+
+.perf-item__val {
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 0.9375rem;
+  min-width: 60px;
+  text-align: right;
+}
+
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.text-center { text-align: center; }
 
 /* Responsive */
 @media (max-width: 1024px) {

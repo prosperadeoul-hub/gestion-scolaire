@@ -11,6 +11,7 @@ import ModulesList from './pages/Admin/MatieresList';
 import EtudiantsList from './pages/Admin/EtudiantsList';
 import NotesList from './pages/Admin/NotesList';
 import SettingsPage from './pages/Admin/SettingsPage';
+import EnseignantsList from './pages/Admin/EnseignantsList';
 import ProgrammationAnnuellePage from './pages/Programmation/ProgrammationAnnuellePage';
 import './App.css';
 
@@ -28,14 +29,14 @@ function AppRoutes() {
           <DashboardWrapper />
         </PrivateRoute>
       } />
-      <Route path="/classes" element={
-        <PrivateRoute>
-          <ClassesList />
-        </PrivateRoute>
-      } />
       <Route path="/modules" element={
         <PrivateRoute>
           <ModulesList />
+        </PrivateRoute>
+      } />
+      <Route path="/teachers" element={
+        <PrivateRoute>
+          <EnseignantsList />
         </PrivateRoute>
       } />
       <Route path="/students" element={
@@ -88,4 +89,3 @@ function App() {
 }
 
 export default App;
-

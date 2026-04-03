@@ -6,14 +6,24 @@ from django.db.models import Avg
 from .models import User, Matiere, Etudiant, Note, Promotion, Module
 from .serializers import (
     UserSerializer, PromotionSerializer, MatiereSerializer, 
-    EtudiantSerializer, NoteSerializer, PromotionWritableSerializer
+    EtudiantSerializer, NoteSerializer, PromotionWritableSerializer,
+    ModuleSerializer
 )
+
+class ModuleViewSet(viewsets.ModelViewSet):
+    queryset = Module.objects.all()
+    serializer_class = ModuleSerializer
 
 class PromotionViewSet(viewsets.ModelViewSet):
     queryset = Promotion.objects.all()
-    serializer_class = PromotionWritableSerializer
+    serializer_class = PromotionSerializer
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return PromotionWritableSerializer
+        return PromotionSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -177,9 +187,12 @@ class StatsViewSet(viewsets.ViewSet):
             recent_notes = NoteSerializer(Note.objects.all().order_by('-date_saisie')[:5], many=True).data
             recent_modules = ModuleSerializer(Module.objects.all().order_by('-id')[:5], many=True).data
 
+            student_distribution = [{"name": p.libelle, "value": p.etudiants.count()} for p in Promotion.objects.all()]
+
             return Response({
                 "role_distribution": role_data,
                 "promotion_data": promotion_data,
+                "student_distribution": student_distribution,
                 "top_promotions": top_promotions,
                 "teacher_load": teacher_load,
                 "recent_data": {

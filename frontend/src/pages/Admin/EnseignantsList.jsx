@@ -8,97 +8,80 @@ import {
   PencilSquareIcon, 
   TrashIcon, 
   MagnifyingGlassIcon,
-  UserGroupIcon,
+  AcademicCapIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline';
 import './AdminPages.css';
 
-const EtudiantsList = () => {
-    const [students, setStudents] = useState([]);
-    const [promotions, setPromotions] = useState([]);
+const EnseignantsList = () => {
+    const [teachers, setTeachers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     
-    // Modal states
     const [showModal, setShowModal] = useState(false);
-    const [editingStudent, setEditingStudent] = useState(null);
+    const [editingTeacher, setEditingTeacher] = useState(null);
     const [formData, setFormData] = useState({ 
-        matricule: '', 
-        promotion: '', 
-        date_naissance: '',
-        first_name: '',
-        last_name: '',
-        sexe: 'M',
-        email: '',
-        telephone: ''
+        username: '', 
+        email: '', 
+        first_name: '', 
+        last_name: '', 
+        sexe: 'M', 
+        telephone: '',
+        role: 'TEACHER'
     });
 
     const { addToast } = useToast();
 
     useEffect(() => {
-        fetchStudents();
+        fetchTeachers();
     }, [page, searchQuery]);
 
-    useEffect(() => {
-        const fetchDeps = async () => {
-            try {
-                const res = await api.get('promotions/');
-                setPromotions(res.data.results || res.data);
-            } catch (err) { console.error(err); }
-        };
-        fetchDeps();
-    }, []);
-
-    const fetchStudents = async () => {
+    const fetchTeachers = async () => {
         try {
             setLoading(true);
-            const res = await api.get(`etudiants/?page=${page}&search=${searchQuery}`);
+            const res = await api.get(`users/?role=TEACHER&page=${page}&search=${searchQuery}`);
             if (res.data.results) {
-                setStudents(res.data.results);
+                setTeachers(res.data.results);
                 setTotalPages(Math.ceil(res.data.count / 10));
             } else {
-                setStudents(res.data);
+                setTeachers(res.data);
                 setTotalPages(1);
             }
         } catch (err) {
-            addToast("Erreur lors du chargement des étudiants", "error");
+            addToast("Erreur lors du chargement des enseignants", "error");
         } finally {
             setLoading(false);
         }
     };
 
-    const handleDelete = async (matricule) => {
-        if (!window.confirm("Supprimer cet étudiant ?")) return;
+    const handleDelete = async (id) => {
+        if (!window.confirm("Supprimer cet enseignant ?")) return;
         try {
-            await api.delete(`etudiants/${matricule}/`);
-            addToast("Étudiant supprimé", "success");
-            fetchStudents();
+            await api.delete(`users/${id}/`);
+            addToast("Enseignant supprimé", "success");
+            fetchTeachers();
         } catch (err) {
             addToast("Erreur lors de la suppression", "error");
         }
     };
 
-    const handleOpenModal = (s = null) => {
-        if (s) {
-            setEditingStudent(s);
+    const handleOpenModal = (t = null) => {
+        if (t) {
+            setEditingTeacher(t);
             setFormData({ 
-                matricule: s.matricule, 
-                promotion: s.promotion || '', 
-                date_naissance: s.date_naissance || '',
-                first_name: s.user_details?.first_name || '',
-                last_name: s.user_details?.last_name || '',
-                sexe: s.user_details?.sexe || 'M',
-                email: s.user_details?.email || '',
-                telephone: s.user_details?.telephone || ''
+                username: t.username, 
+                email: t.email, 
+                first_name: t.first_name, 
+                last_name: t.last_name, 
+                sexe: t.sexe || 'M', 
+                telephone: t.telephone || '',
+                role: 'TEACHER'
             });
         } else {
-            setEditingStudent(null);
-            setFormData({ 
-                matricule: '', promotion: '', date_naissance: '', first_name: '', 
-                last_name: '', sexe: 'M', email: '', telephone: '' 
-            });
+            setEditingTeacher(null);
+            setFormData({ username: '', email: '', first_name: '', last_name: '', sexe: 'M', telephone: '', role: 'TEACHER' });
         }
         setShowModal(true);
     };
@@ -106,69 +89,73 @@ const EtudiantsList = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (editingStudent) {
-                await api.put(`etudiants/${editingStudent.matricule}/`, formData);
-                addToast("Informations modifiées", "success");
+            if (editingTeacher) {
+                await api.put(`users/${editingTeacher.id}/`, formData);
+                addToast("Enseignant modifié", "success");
             } else {
-                await api.post('etudiants/', formData);
-                addToast("Étudiant créé avec succès", "success");
+                if (!formData.username) formData.username = formData.email;
+                await api.post('users/', formData);
+                addToast("Enseignant créé avec succès", "success");
             }
             setShowModal(false);
-            fetchStudents();
+            fetchTeachers();
         } catch (err) {
             addToast("Erreur lors de l'enregistrement", "error");
         }
     };
 
     return (
-        <MainLayout title="Gestion des Étudiants">
+        <MainLayout title="Gestion des Enseignants">
             <div className="admin-page-container">
                 <header className="admin-page-header">
                     <div className="search-bar">
                         <MagnifyingGlassIcon className="search-icon" />
                         <input 
                             type="text" 
-                            placeholder="Rechercher par nom ou matricule..." 
+                            placeholder="Rechercher un enseignant..." 
                             value={searchQuery}
                             onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
                         />
                     </div>
                     <button className="btn btn-primary" onClick={() => handleOpenModal()}>
                         <PlusIcon className="btn-icon" />
-                        Nouvel Étudiant
+                        Nouvel Enseignant
                     </button>
                 </header>
 
                 {loading ? (
                     <div className="inner-loading"><div className="loading-spinner"></div></div>
+                ) : teachers.length === 0 ? (
+                    <div className="empty-state">
+                        <AcademicCapIcon className="empty-icon" />
+                        <p>Aucun enseignant trouvé.</p>
+                    </div>
                 ) : (
                     <>
                         <div className="table-card">
                             <table className="grade-table">
                                 <thead>
                                     <tr>
-                                        <th>Matricule</th>
                                         <th>Nom Complet</th>
                                         <th>Sexe</th>
-                                        <th>Promotion</th>
                                         <th>Email</th>
+                                        <th>Téléphone</th>
                                         <th className="text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {students.map(s => (
-                                        <tr key={s.matricule} className="grade-table__row">
-                                            <td className="grade-table__cell font-mono">{s.matricule}</td>
-                                            <td className="grade-table__cell font-bold">{s.user_details?.last_name} {s.user_details?.first_name}</td>
-                                            <td className="grade-table__cell">{s.user_details?.sexe === 'M' ? 'Masculin' : 'Féminin'}</td>
-                                            <td className="grade-table__cell"><span className="badge-class">{s.promotion_libelle}</span></td>
-                                            <td className="grade-table__cell">{s.user_details?.email}</td>
+                                    {teachers.map(t => (
+                                        <tr key={t.id} className="grade-table__row">
+                                            <td className="grade-table__cell font-bold">{t.last_name} {t.first_name}</td>
+                                            <td className="grade-table__cell">{t.sexe === 'M' ? 'Masculin' : 'Féminin'}</td>
+                                            <td className="grade-table__cell">{t.email}</td>
+                                            <td className="grade-table__cell">{t.telephone || '--'}</td>
                                             <td className="grade-table__cell text-right">
                                                 <div className="row-actions">
-                                                    <button className="action-btn edit" onClick={() => handleOpenModal(s)}>
+                                                    <button className="action-btn edit" onClick={() => handleOpenModal(t)}>
                                                         <PencilSquareIcon className="action-icon" />
                                                     </button>
-                                                    <button className="action-btn delete" onClick={() => handleDelete(s.matricule)}>
+                                                    <button className="action-btn delete" onClick={() => handleDelete(t.id)}>
                                                         <TrashIcon className="action-icon" />
                                                     </button>
                                                 </div>
@@ -187,23 +174,10 @@ const EtudiantsList = () => {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h3>{editingStudent ? 'Modifier Étudiant' : 'Ajouter Étudiant'}</h3>
+                            <h3>{editingTeacher ? 'Modifier Enseignant' : 'Ajouter Enseignant'}</h3>
                             <button className="close-btn" onClick={() => setShowModal(false)}><XMarkIcon className="action-icon" /></button>
                         </div>
                         <form onSubmit={handleSubmit} className="modal-form">
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label>Matricule</label>
-                                    <input className="form-group__input" type="text" value={formData.matricule} onChange={(e) => setFormData({...formData, matricule: e.target.value})} required disabled={editingStudent} />
-                                </div>
-                                <div className="form-group">
-                                    <label>Promotion</label>
-                                    <select className="form-group__select" value={formData.promotion} onChange={(e) => setFormData({...formData, promotion: e.target.value})} required>
-                                        <option value="">Sélectionner...</option>
-                                        {promotions.map(p => (<option key={p.id} value={p.id}>{p.libelle}</option>))}
-                                    </select>
-                                </div>
-                            </div>
                             <div className="form-row">
                                 <div className="form-group">
                                     <label>Nom</label>
@@ -214,23 +188,17 @@ const EtudiantsList = () => {
                                     <input className="form-group__input" type="text" value={formData.first_name} onChange={(e) => setFormData({...formData, first_name: e.target.value})} required />
                                 </div>
                             </div>
+                            <div className="form-group">
+                                <label>Email (Sert d'identifiant)</label>
+                                <input className="form-group__input" type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} required />
+                            </div>
                             <div className="form-row">
-                                <div className="form-group">
-                                    <label>Date de naissance</label>
-                                    <input className="form-group__input" type="date" value={formData.date_naissance} onChange={(e) => setFormData({...formData, date_naissance: e.target.value})} required />
-                                </div>
                                 <div className="form-group">
                                     <label>Sexe</label>
                                     <select className="form-group__select" value={formData.sexe} onChange={(e) => setFormData({...formData, sexe: e.target.value})}>
                                         <option value="M">Masculin</option>
                                         <option value="F">Féminin</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group">
-                                    <label>Email</label>
-                                    <input className="form-group__input" type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} required />
                                 </div>
                                 <div className="form-group">
                                     <label>Téléphone</label>
@@ -239,7 +207,7 @@ const EtudiantsList = () => {
                             </div>
                             <div className="modal-actions">
                                 <button type="button" className="btn" onClick={() => setShowModal(false)}>Annuler</button>
-                                <button type="submit" className="btn btn-primary">Enregistrer Étudiant</button>
+                                <button type="submit" className="btn btn-primary">Enregistrer</button>
                             </div>
                         </form>
                     </div>
@@ -249,4 +217,4 @@ const EtudiantsList = () => {
     );
 };
 
-export default EtudiantsList;
+export default EnseignantsList;
