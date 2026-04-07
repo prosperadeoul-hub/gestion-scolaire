@@ -35,9 +35,10 @@ const AdminDashboard = () => {
         const resUs = await api.get('users/');
         const resStats = await api.get('stats/dashboard/');
         
-        let users = resUs.data.results || resUs.data;
-        const teachersCount = users.filter(u => u.role === 'TEACHER').length;
-        const studentsCount = users.filter(u => u.role === 'STUDENT').length;
+        // Utiliser les stats du backend plutôt que compter côté frontend
+        const roleStats = resStats.data.role_distribution || [];
+        const studentsCount = roleStats.find(r => r.name === 'STUDENT')?.value || 0;
+        const teachersCount = roleStats.find(r => r.name === 'TEACHER')?.value || 0;
 
         setStats({
           pupils: studentsCount,
@@ -246,7 +247,7 @@ const AdminDashboard = () => {
       <section className="dashboard-recent">
          <div className="recent-card">
             <div className="recent-card__header">
-               <h3>Dernières Notes</h3>
+               <h3>Dernières Notes ({recentData.notes ? recentData.notes.length : 0})</h3>
             </div>
             <div className="recent-table-wrapper">
                <table className="recent-table">
@@ -255,20 +256,22 @@ const AdminDashboard = () => {
                         <th>Étudiant</th>
                         <th>Matière</th>
                         <th>Note</th>
+                        <th>Date</th>
                      </tr>
                   </thead>
                   <tbody>
-                     {recentData.notes.map(n => (
+                     {recentData.notes && recentData.notes.slice(0, 5).map(n => (
                         <tr key={n.id}>
                            <td>{n.etudiant_name}</td>
                            <td>{n.matiere_name}</td>
                            <td className={n.valeur >= 10 ? 'text-success' : 'text-danger'}>
-                              {n.valeur !== null ? n.valeur : '--'}
+                              {n.valeur !== null ? `${n.valeur}/20` : '--'}
                            </td>
+                           <td>{new Date(n.date_saisie).toLocaleDateString('fr-FR')}</td>
                         </tr>
                      ))}
-                     {recentData.notes.length === 0 && (
-                        <tr><td colSpan="3" className="text-muted">Aucune note récente.</td></tr>
+                     {(!recentData.notes || recentData.notes.length === 0) && (
+                        <tr><td colSpan="4" className="text-muted">Aucune note récente.</td></tr>
                      )}
                   </tbody>
                </table>
@@ -277,7 +280,7 @@ const AdminDashboard = () => {
 
          <div className="recent-card">
             <div className="recent-card__header">
-               <h3>Nouveaux Étudiants</h3>
+               <h3>Nouveaux Étudiants ({recentData.students ? recentData.students.length : 0})</h3>
             </div>
             <div className="recent-table-wrapper">
                <table className="recent-table">
@@ -286,18 +289,20 @@ const AdminDashboard = () => {
                         <th>Matricule</th>
                         <th>Nom</th>
                         <th>Promotion</th>
+                        <th>Inscrit</th>
                      </tr>
                   </thead>
                   <tbody>
-                     {recentData.students.map(s => (
+                     {recentData.students && recentData.students.slice(0, 5).map(s => (
                         <tr key={s.matricule}>
                            <td>{s.matricule}</td>
                            <td>{s.user.last_name} {s.user.first_name}</td>
                            <td>{s.promotion_libelle}</td>
+                           <td>{s.user?.date_joined ? new Date(s.user.date_joined).toLocaleDateString('fr-FR') : '--'}</td>
                         </tr>
                      ))}
-                     {recentData.students.length === 0 && (
-                        <tr><td colSpan="3" className="text-muted">Aucun étudiant inscrit.</td></tr>
+                     {(!recentData.students || recentData.students.length === 0) && (
+                        <tr><td colSpan="4" className="text-muted">Aucun étudiant inscrit.</td></tr>
                      )}
                   </tbody>
                </table>
@@ -306,7 +311,7 @@ const AdminDashboard = () => {
 
          <div className="recent-card">
             <div className="recent-card__header">
-               <h3>Derniers Modules (UE)</h3>
+               <h3>Derniers Modules ({recentData.modules ? recentData.modules.length : 0})</h3>
             </div>
             <div className="recent-table-wrapper">
                <table className="recent-table">
@@ -319,7 +324,7 @@ const AdminDashboard = () => {
                      </tr>
                   </thead>
                   <tbody>
-                     {recentData.modules && recentData.modules.map(m => (
+                     {recentData.modules && recentData.modules.slice(0, 5).map(m => (
                         <tr key={m.id}>
                            <td>{m.code}</td>
                            <td>{m.nom}</td>

@@ -1,11 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  Squares2X2Icon, 
-  AcademicCapIcon, 
-  BookOpenIcon, 
-  UsersIcon, 
-  DocumentChartBarIcon, 
+import {
+  Squares2X2Icon,
+  AcademicCapIcon,
+  BookOpenIcon,
+  UsersIcon,
+  DocumentChartBarIcon,
+  DocumentCheckIcon,
   Cog6ToothIcon,
   ArrowLeftOnRectangleIcon,
   TableCellsIcon,

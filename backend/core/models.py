@@ -20,6 +20,11 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"
 
+    def save(self, *args, **kwargs):
+        if self.is_superuser and self.role != 'ADMIN':
+            self.role = 'ADMIN'
+        super().save(*args, **kwargs)
+
 # class Classe(models.Model):
 #     libelle = models.CharField(max_length=100)
 #     niveau = models.CharField(max_length=50) 
