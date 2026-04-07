@@ -82,11 +82,19 @@ class EtudiantSerializer(serializers.ModelSerializer):
 
 class MatiereSerializer(serializers.ModelSerializer):
     enseignant_name = serializers.CharField(source='enseignant.last_name', read_only=True)
-    promotion_libelle = serializers.CharField(source='promotion.libelle', read_only=True)
+    module_nom = serializers.CharField(source='module.nom', read_only=True)
+    module_semestre = serializers.IntegerField(source='module.semestre', read_only=True)
+    promotion_libelle = serializers.CharField(source='module.promotion.libelle', read_only=True)
+    promotion = serializers.IntegerField(source='module.promotion.id', read_only=True)
     
     class Meta:
         model = Matiere
-        fields = ['id', 'code', 'nom', 'credits_ects', 'enseignant', 'enseignant_name', 'promotion', 'promotion_libelle', 'semestre']
+        fields = [
+            'id', 'code', 'nom', 'credits_ects',
+            'enseignant', 'enseignant_name',
+            'module', 'module_nom', 'module_semestre',
+            'promotion', 'promotion_libelle'
+        ]
 
 class NoteSerializer(serializers.ModelSerializer):
     etudiant_name = serializers.SerializerMethodField()

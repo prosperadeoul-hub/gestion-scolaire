@@ -32,33 +32,27 @@ class Matiere(models.Model):
     code = models.CharField(max_length=20, unique=True)
     nom = models.CharField(max_length=100)
     
-    # Dans le supérieur, on parle de crédits ECTS
-    credits_ects = models.PositiveIntegerField(default=6)
+    # Crédits ECTS propres à cette matière (peut différer du total du module)
+    credits_ects = models.PositiveIntegerField(default=3)
     
     enseignant = models.ForeignKey(
         'User',
         on_delete=models.SET_NULL, 
         null=True, 
+        blank=True,
         limit_choices_to={'role': 'TEACHER'},
         related_name='matieres_enseignees'
     )
     
-    # Liaison avec la Promotion
-    promotion = models.ForeignKey(
-        'Promotion',
+    # Liaison avec le Module (qui porte déjà promotion + semestre)
+    module = models.ForeignKey(
+        'Module',
         on_delete=models.CASCADE,
         related_name='matieres'
     )
 
-    # Indispensable pour organiser les notes par période
-    SEMESTRE_CHOICES = [
-        (1, 'Semestre 1'),
-        (2, 'Semestre 2'),
-    ]
-    semestre = models.IntegerField(choices=SEMESTRE_CHOICES, default=1)
-
     def __str__(self):
-        return f"{self.nom} - {self.promotion.libelle} (S{self.semestre})"
+        return f"{self.nom} ({self.module.code} - S{self.module.semestre})"
 
 class Etudiant(models.Model):
     matricule = models.CharField(max_length=50, primary_key=True)

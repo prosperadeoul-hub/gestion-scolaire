@@ -211,7 +211,7 @@ class StatsViewSet(viewsets.ViewSet):
             return Response({"detail": "Role Teacher requis"}, status=403)
         
         notes_prof = Note.objects.filter(matiere__enseignant=user)
-        promotions_prof = Promotion.objects.filter(matieres__enseignant=user).distinct()
+        promotions_prof = Promotion.objects.filter(modules__matieres__enseignant=user).distinct()
         students_count = Etudiant.objects.filter(promotion__in=promotions_prof).distinct().count()
         avg_grade = notes_prof.aggregate(avg=Avg('valeur'))['avg'] or 0
 

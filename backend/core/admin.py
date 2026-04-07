@@ -6,7 +6,7 @@ class MatiereInline(admin.TabularInline):
     model = Matiere
     extra = 1
     fk_name = 'enseignant'
-    fields = ('code', 'nom', 'promotion', 'credits_ects', 'semestre')
+    fields = ('code', 'nom', 'module', 'credits_ects')
 
 
 @admin.register(User)
@@ -31,9 +31,9 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Matiere)
 class MatiereAdmin(admin.ModelAdmin):
-    list_display = ('code', 'nom', 'credits_ects', 'promotion', 'get_enseignant_name')
-    list_filter = ('credits_ects', 'promotion', 'semestre')
-    search_fields = ('code', 'nom', 'enseignant__username', 'promotion__libelle')
+    list_display = ('code', 'nom', 'credits_ects', 'module', 'get_enseignant_name')
+    list_filter = ('credits_ects', 'module__promotion', 'module__semestre')
+    search_fields = ('code', 'nom', 'enseignant__username', 'module__nom', 'module__promotion__libelle')
     
     def get_enseignant_name(self, obj):
         if obj.enseignant:
